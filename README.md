@@ -37,3 +37,11 @@ GET、POST、PUT、DELETE
     "request": url // 当前的http请求url路径
 }
 ```
+# 3. 异常处理
+## 3.1 已知异常
+我们可以预知的异常。
+**解决办法：**抛出APIException
+## 3.2 未知异常
+我们没有意识到的异常，如何统一数据的返回格式？即json格式
+**解决办法：**在全局的某个地方捕获到所有未知异常，统一处理未知异常——AOP思想。
+将未知异常分为两种：HTTPException/Exception。分别代表HTTP错误和服务器代码错误，最后都包装成APIException抛出
