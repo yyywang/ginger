@@ -7,6 +7,10 @@ from app.libs.redprint import Redprint
 
 api = Redprint('book')
 
-@api.route('/get')
+@api.route('', methods=['GET'])
 def get_book():
     return 'i am book'
+
+@api.route('', methods=['POST'])
+def create_book():
+    return 'create book'
