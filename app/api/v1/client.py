@@ -13,7 +13,6 @@ api = Redprint("client")
 
 @api.route('/register', methods=['POST'])
 def create_client():
-    1/0
     # 如果校验不通过会抛出异常，后面的代码就不执行了
     form = ClientForm().validate_for_api()
     # 根据不同的客户端执行不同的注册程序
