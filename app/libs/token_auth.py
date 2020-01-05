@@ -6,12 +6,13 @@ from collections import namedtuple
 from flask_httpauth import HTTPBasicAuth
 from itsdangerous import TimedJSONWebSignatureSerializer \
     as Serializer, BadSignature, SignatureExpired
-from flask import current_app, g
-from app.libs.error_code import AuthFailed
+from flask import current_app, g, request
 
+from app.libs.error_code import AuthFailed, Forbidden
+from app.libs.scope import is_in_scope
 
 auth = HTTPBasicAuth()
-User = namedtuple('User', ['uid', 'ac_type', 'scope'])
+User = namedtuple('User', ['uid', 'ac_type', 'is_admin'])
 
 
 @auth.verify_password
@@ -43,5 +44,8 @@ def verify_auth_token(token):
                          error_code=1003)
     uid = data['uid']
     ac_type = data['type']
-
-    return User(uid, ac_type, '')
+    scope = data['scope']
+    allow = is_in_scope(scope, request.endpoint)
+    if not allow:
+        raise Forbidden()
+    return User(uid, ac_type, scope)

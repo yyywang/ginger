@@ -26,5 +26,6 @@ class Redprint:
         for f, rule, options in self.mound:
             # 如果 options 字典中没有 endpoint 元素，那么取 f.__name__ 的值
             # 想当于为 endpoint 添加了默认值
-            endpoint = options.pop("endpoint", f.__name__)
+            endpoint = self.name + '+' + \
+                       options.pop("endpoint", f.__name__)
             bp.add_url_rule(url_prefix + rule, endpoint, f, **options)

@@ -25,7 +25,7 @@ def get_token():
     expiration = current_app.config['TOKEN_EXPIRATION']
     token = generate_auth_token(identity['uid'],
                                 form.type.data,
-                                None,
+                                identity['scope'],
                                 expiration)
     # 用序列化器生成的Token不是普通的字符串
     # 需要调用decode转码
@@ -51,5 +51,6 @@ def generate_auth_token(uid, ac_type, scope=None,
     # 返回值为字符串
     return s.dumps({
         'uid': uid,
-        'type': ac_type.value
+        'type': ac_type.value,
+        'scope': scope
     })
